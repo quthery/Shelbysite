@@ -1,0 +1,36 @@
+* {
+	box-sizing: border-box;
+}
+table {
+	width: 640px;
+	height: 480px;
+    
+	display: flex;
+	justify-content: space-between;
+	flex-wrap: wrap;
+}
+td{
+	border: 2px;
+	width: 200px;
+	height: 130px;
+	cursor: crosshair;
+
+    text-align: center;
+	justify-content: center;
+	align-items: center;
+    color: brown;
+    font-family: sans-serif;
+	background-color: #202328;
+	border-radius: 10px;
+}
+
+
+html, body {
+	height: 100%;
+	background-color: #4d5258;
+}
+body {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}

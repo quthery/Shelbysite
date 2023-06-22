@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        #canv{
+            border: 1px solid black;
+            cursor: crosshair;
+        }
+
+        body{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+        }
+
+        .controls{
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            gap: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="controls">
+        <input type="color" id="btnColor">
+        <input type="range" id="btnLineWidth" min="1" max="10" value="1">
+        <button id="btnClear">Clear</button>
+        <button id="btnSave">Save</button>
+    </div>
+
+    <canvas id="canv" width="500" height="500"></canvas>
+    
+    <script>
+        var canvas = document.getElementById('canv');
+        var context = canvas.getContext('2d');
+        var isDraw = false, lastX = 0, lastY = 0;
+        var lineWidth = context.lineWidth;
+        var color = context.strokeStyle;
+
+        //кнопка очистки
+        btnClear.onclick = function(){
+            context.clearRect(0, 0, canvas.width, canvas.height);
+        }
+
+        //кнопка ширины кисти
+        btnLineWidth.addEventListener('input', function(event){
+            lineWidth = event.target.value;
+        });
+
+        //кнопка изменения цвета
+        btnColor.onchange = function(event){
+            color = event.target.value;
+        }
+
+        btnSave.addEventListener('click', function(){
+            var image = canvas.toDataURL();//канвас в ссылку
+            var link = document.createElement('a');//делаем ссылку
+            link.href = image;//привязываем ссылку
+            link.download = 'myart.png';//ставим название файла
+            link.click();//скачиваем
+        });
+
+        function drawLine(event){
+            if (!isDraw) return;
+
+            context.lineWidth = lineWidth;//ставлю ширину кисти
+            context.strokeStyle = color;//ставлю цвет
+
+            context.beginPath();
+            context.moveTo(lastX, lastY);
+            context.lineTo(event.offsetX, event.offsetY);
+            context.stroke();
+
+            lastX = event.offsetX;
+            lastY = event.offsetY;
+        }
+
+
+
+        //обработчики событий
+        canvas.addEventListener('mouseup', function(){
+            isDraw = false;
+        });
+
+        canvas.addEventListener('mouseout', function(){
+            isDraw = false;
+        });
+
+        canvas.addEventListener('mousedown', function(event){
+            isDraw = true;
+            lastX = event.offsetX;
+            lastY = event.offsetY;
+        });
+
+        canvas.addEventListener('mousemove', drawLine);
+
+
+
+    </script>
+</body>
+</html>
